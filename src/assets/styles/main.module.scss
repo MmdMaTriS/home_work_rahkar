@@ -1,0 +1,56 @@
+.profile_container {
+  width: 100%;
+  min-height: 70px;
+  padding: 20px;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center;
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 25px;
+    overflow: hidden;
+    align-self: flex-end;
+    cursor: pointer;
+  }
+  .button {
+    align-items: flex-start;
+    button {
+      min-width: 150px;
+      box-shadow: none;
+      background: var(--primary-color);
+      &:disabled {
+        background: var(--sec-color);
+      }
+    }
+  }
+}
+.table {
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td,
+  th {
+    border: 1px solid var(--sec3-color);
+    text-align: left;
+    padding: 8px;
+  }
+}
+
+.fields_header {
+  align-items: center;
+  justify-content: space-between;
+  button {
+    margin-inline: 5px;
+  }
+  button[data-active="true"] {
+    background: var(--primary-color);
+  }
+}
+.main_modal {
+  margin-inline: 5px;
+  margin-top: 20px;
+}
