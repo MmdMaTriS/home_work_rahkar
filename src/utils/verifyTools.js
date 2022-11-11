@@ -3,3 +3,9 @@ export const checkEmail = (email) => {
   const isValid = pattern.test(email);
   return isValid;
 };
+
+export const checkName = (e) => {
+  const patt = /^[a-zA-Z\s]+$/;
+  const isValid = patt.test(e);
+  return isValid;
+};

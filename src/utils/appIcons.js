@@ -8,6 +8,7 @@ import UpdateOutlinedIcon from "@mui/icons-material/UpdateOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import NotInterestedOutlinedIcon from "@mui/icons-material/NotInterestedOutlined";
 import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 export default function appIcons(name, props) {
   let icon = {
     arrowRightIcon: <KeyboardArrowRightIcon {...props} />,
@@ -19,7 +20,8 @@ export default function appIcons(name, props) {
     updateIcon: <UpdateOutlinedIcon {...props} />,
     deleteIcon: <DeleteForeverOutlinedIcon {...props} />,
     banIcon: <NotInterestedOutlinedIcon {...props} />,
-    createIcon: <CreateNewFolderOutlinedIcon {...props} />
+    createIcon: <CreateNewFolderOutlinedIcon {...props} />,
+    plusIcon: <AddCircleOutlineIcon {...props} />
   }[name];
   return icon || "";
 }

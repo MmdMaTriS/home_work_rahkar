@@ -20,6 +20,8 @@ import { toggleUserList } from "../store/reducers/userSlice";
 import { isEmpty } from "lodash";
 import BasicModal from "../components/Modal";
 import SelectBox from "../components/SelectBox";
+import appIcons from "../utils/appIcons";
+import { checkEmail, checkName } from "../utils/verifyTools";
 const FAKE_USER_AVATAR_URL = [
   { title: "User Profile", href: "/main" },
   { title: "Settings", href: "/main" },
@@ -31,14 +33,29 @@ const FORM_BUTTONS = [
   { title: "Relations", id: 1 },
   { title: "Address", id: 2 }
 ];
+
+const GENDER_LIST = [
+  { title: "Male", value: "m" },
+  { title: "Female", value: "f" },
+  { title: "Other", value: "o" }
+];
 export default function Main() {
   const dispatch = useDispatch();
+  const userListReducer = useSelector((state) => state.userReducer);
+
+  //##
   const [anchorElMenu, setAnchorElMenu] = useState({});
   const [disableButton, setDisableButton] = useState(false);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [buttonSelectedForm, setButtonSelectedForm] = useState(0);
-  const userListReducer = useSelector((state) => state.userReducer);
-
+  const [addressCounte, setAddressCount] = useState(1);
+  //#
+  const [formValues, setFormValues] = useState({
+    name: "",
+    email: "",
+    gender: "",
+    desc: ""
+  });
   const handleOpenHeaderMenu = (e, id) => {
     let Obj = {};
     Obj[id] = e.currentTarget;
@@ -62,6 +79,21 @@ export default function Main() {
     } finally {
       setDisableButton(false);
     }
+  };
+
+  const handleAddAddress = () => {
+    setAddressCount((prev) => prev + 1);
+  };
+
+  const handleChangeFormValue = (e) => {
+    setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = () => {
+    if (!checkName(formValues.name))
+      return toast.error("Name is not acceptable");
+    if (!checkEmail(formValues.email)) return toast.error("Email not valid");
+    alert("Fetch Data");
   };
   return (
     <Aside>
@@ -118,7 +150,7 @@ export default function Main() {
             </tr>
             {userListReducer.usersList.map((ctx, idx) => {
               return (
-                <tr>
+                <tr key={idx}>
                   <td>{ctx.id}</td>
                   <td>{ctx.first_name + " " + ctx.last_name}</td>
                   <td>{ctx.email}</td>
@@ -174,22 +206,70 @@ export default function Main() {
           {buttonSelectedForm === 0 ? (
             <Stack>
               <Stack mb={2}>
-                <TextField label="Name" type="text" />
+                <TextField
+                  label="Name"
+                  type="text"
+                  name="name"
+                  value={formValues.name}
+                  onChange={handleChangeFormValue}
+                  inputProps={{ pattern: "[a-z]" }}
+                />
               </Stack>
               <Stack mb={2}>
-                <TextField label="Email" type="email" />
+                <TextField
+                  label="Email"
+                  type="email"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleChangeFormValue}
+                />
               </Stack>
               <Stack mb={2}>
-                <SelectBox />
+                <SelectBox
+                  list={GENDER_LIST}
+                  name="gender"
+                  label="Gender"
+                  value={formValues.gender}
+                  onChange={handleChangeFormValue}
+                />
               </Stack>
               <Stack mb={2}>
-                <TextareaAutosize placeholder="Description" minRows={5} />
+                <TextareaAutosize
+                  placeholder="Description"
+                  minRows={5}
+                  name="desc"
+                  value={formValues.desc}
+                  onChange={handleChangeFormValue}
+                />
               </Stack>
             </Stack>
           ) : buttonSelectedForm === 1 ? (
             <Stack></Stack>
           ) : (
-            <Stack></Stack>
+            <Stack>
+              {Array.from(Array(addressCounte)).map((c, i) => {
+                return (
+                  <Stack marginY={1} key={i}>
+                    <TextField
+                      label={`Address No ${++i}`}
+                      name={`address${i}`}
+                      value={formValues["address" + i]}
+                      onChange={handleChangeFormValue}
+                    />
+                  </Stack>
+                );
+              })}
+              <Stack className={styles.plus_icon} onClick={handleAddAddress}>
+                {appIcons("plusIcon")}
+              </Stack>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Stack>
           )}
         </Stack>
       </BasicModal>
